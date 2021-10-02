@@ -9,16 +9,16 @@
 	</organization>
 
 	<groupId>com.mclarkdev.tools</groupId>
-	<artifactId>libmetrics</artifactId>
+	<artifactId>libwebsvc</artifactId>
 	<version>PRERELEASE</version>
 	<packaging>jar</packaging>
 
-	<name>libmetrics</name>
-	<url>https://www.mclarkdev.com/tools/libmetrics</url>
-	<description>An generic metrics cache for collecting various system counters.</description>
+	<name>libwebsvc</name>
+	<url>https://www.mclarkdev.com/tools/libwebsvc</url>
+	<description>A collection of tools for easily starting a Jetty server.</description>
 
 	<scm>
-		<url>https://git.mclarkdev.com/MClarkDev.com--Public/LibMetrics.git</url>
+		<url>https://git.mclarkdev.com/MClarkDev.com--Public/libwebsvc.git</url>
 	</scm>
 
 	<properties>
@@ -61,10 +61,29 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20160212</version>
-			<scope>compile</scope>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>9.4.17.v20190418</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.websocket</groupId>
+			<artifactId>websocket-server</artifactId>
+			<version>9.4.28.v20200408</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mclarkdev.tools</groupId>
+			<artifactId>libmetrics</artifactId>
+			<version>PRERELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mclarkdev.tools</groupId>
+			<artifactId>libobjectcache</artifactId>
+			<version>PRERELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mclarkdev.tools</groupId>
+			<artifactId>liblog</artifactId>
+			<version>PRERELEASE</version>
 		</dependency>
 	</dependencies>
 </project>
