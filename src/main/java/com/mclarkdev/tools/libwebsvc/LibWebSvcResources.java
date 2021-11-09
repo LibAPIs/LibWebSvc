@@ -14,6 +14,7 @@ public class LibWebSvcResources extends LibWebSvcAPI {
 
 		resources = new ResourceHandler();
 		resources.setServer(server);
+		resources.setDirectoriesListed(false);
 		resources.setResourceBase("resources");
 		resources.setRedirectWelcome(true);
 		resources.setWelcomeFiles(new String[] { "index.html" });
