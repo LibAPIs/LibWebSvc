@@ -8,7 +8,7 @@ import com.mclarkdev.tools.libobjectcache.LibObjectCacheCachedObject;
 public class LibWebSvcSessionCache {
 
 	public static LibObjectCache getCache() {
-		return LibObjectCache.getCache("sessions");
+		return LibObjectCache.getCache("webSessions");
 	}
 
 	public static LibWebSvcSession getSession(String key) {

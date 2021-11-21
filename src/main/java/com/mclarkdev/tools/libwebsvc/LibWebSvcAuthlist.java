@@ -18,7 +18,7 @@ public class LibWebSvcAuthlist {
 		List<String> authlist = authMap.get(listName);
 		if (authlist == null) {
 			try {
-				String f = String.format("config/%s.conf", listName);
+				String f = String.format("auth/%s.conf", listName);
 				authlist = Files.readAllLines(Paths.get(f));
 				authMap.put(listName, authlist);
 			} catch (Exception e) {
