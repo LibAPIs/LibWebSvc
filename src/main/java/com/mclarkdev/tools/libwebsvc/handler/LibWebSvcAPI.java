@@ -94,7 +94,7 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 
 		// set allow multipart
 		if (request.getContentType() != null && request.getContentType().startsWith("multipart/")) {
-			request.setAttribute(Request.__MULTIPART_CONFIG_ELEMENT, MULTI_PART_CONFIG);
+			request.setAttribute(Request.MULTIPART_CONFIG_ELEMENT, MULTI_PART_CONFIG);
 		}
 
 		// get user session info
