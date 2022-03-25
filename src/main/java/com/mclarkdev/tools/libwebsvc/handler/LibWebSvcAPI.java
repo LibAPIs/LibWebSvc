@@ -107,6 +107,7 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 
 			getMetrics().hitCounter("request", "target", _NAME, "result", "_405");
 			response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+			response.addHeader("Content-Type", "application/json");
 			response.getOutputStream().println((new JSONObject()//
 					.put("error", "method not allowed")//
 					.put("code", 405)//
@@ -122,6 +123,7 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 
 			getMetrics().hitCounter("request", "target", _NAME, "result", "_401");
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.addHeader("Content-Type", "application/json");
 			response.getOutputStream().println((new JSONObject()//
 					.put("error", "unauthorized")//
 					.put("code", 401)//
@@ -140,6 +142,7 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 			// catch errors / exceptions from implementation
 			getMetrics().hitCounter("request", "target", _NAME, "result", "_500");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.addHeader("Content-Type", "application/json");
 			response.getOutputStream().println((new JSONObject()//
 					.put("error", "internal server error")//
 					.put("type", e.getClass().toString())//
