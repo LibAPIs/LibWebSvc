@@ -13,6 +13,7 @@ public class LibWebSvcResources extends LibWebSvcAPI {
 		super();
 
 		resources = new ResourceHandler();
+		resources.setCacheControl("max-age=604800");
 		resources.setServer(server);
 		resources.setDirectoriesListed(false);
 		resources.setResourceBase("resources");
