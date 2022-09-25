@@ -27,6 +27,10 @@ public class LibWebSvc {
 		server.start();
 	}
 
+	public Server getServer() {
+		return server;
+	}
+
 	public void addResources() throws Exception {
 
 		// Instantiate the static resource handler and add it to the collection
