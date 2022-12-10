@@ -113,6 +113,8 @@ public class LibWebSvc {
 
 			@Override
 			public void configure(WebSocketServletFactory factory) {
+				factory.getPolicy().setMaxTextMessageSize(16 * 1024 * 1024);
+				factory.getPolicy().setMaxBinaryMessageSize(0);
 				factory.register(clazz);
 			}
 		});
