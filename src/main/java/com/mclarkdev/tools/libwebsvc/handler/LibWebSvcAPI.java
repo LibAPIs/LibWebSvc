@@ -12,11 +12,11 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.json.JSONObject;
 
+import com.mclarkdev.tools.libextras.LibExtrasHashes;
 import com.mclarkdev.tools.liblog.LibLog;
 import com.mclarkdev.tools.libmetrics.LibMetrics;
 import com.mclarkdev.tools.libwebsvc.LibWebSvcAuthlist;
 import com.mclarkdev.tools.libwebsvc.LibWebSvcRequestContext;
-import com.mclarkdev.tools.libwebsvc.LibWebSvcUtils;
 
 public abstract class LibWebSvcAPI extends AbstractHandler {
 
@@ -173,7 +173,7 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 			return false;
 		}
 
-		String passHash = LibWebSvcUtils.sumSHA256(unpw[1].getBytes());
+		String passHash = LibExtrasHashes.sumSHA256(unpw[1].getBytes());
 		String userAuth = String.format("%s:%s", unpw[0], passHash);
 
 		return LibWebSvcAuthlist.getAuthlist(authlist).contains(userAuth);

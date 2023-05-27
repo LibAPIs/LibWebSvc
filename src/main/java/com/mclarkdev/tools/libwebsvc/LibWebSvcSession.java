@@ -1,10 +1,13 @@
 package com.mclarkdev.tools.libwebsvc;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.Cookie;
+
+import org.json.JSONObject;
 
 import com.mclarkdev.tools.libobjectcache.LibObjectCacheCachedObject;
 
@@ -42,26 +45,24 @@ public class LibWebSvcSession extends LibObjectCacheCachedObject {
 		return new Cookie("session", getKey());
 	}
 
-	@Override
-	public String toString() {
+	public JSONObject toJSON() {
 
-		String requests = "";
-		int requestCount = 0;
-		for (String key : sessionRequests.keySet()) {
-
-			int count = sessionRequests.get(key);
-			requestCount += count;
-
-			requests += String.format("%4d :: %s\n", count, key);
+		JSONObject requests = new JSONObject();
+		for (Map.Entry<String, Integer> e : sessionRequests.entrySet()) {
+			requests.put(getKey(), e.getValue());
 		}
 
-		return "\n" + //
-				" Key: " + getKey() + "\n" + //
-				" Created: " + getTimeCreated() + "\n" + //
-				" Last Seen: " + getTimeLastSeen() + "\n" + //
-				" Expiration: " + getTimeExpires() + "\n" + //
-				" Request Count: " + requestCount + "\n" + //
-				"\n  --\n\n" + requests;
+		return new JSONObject()//
+				.put("key", getKey())//
+				.put("create", getTimeCreated())//
+				.put("last-seen", getTimeLastSeen())//
+				.put("expiration", getTimeExpires())//
+				.put("request-count", getTouchCount())//
+				.put("requests", requests);
 	}
 
+	@Override
+	public String toString() {
+		return toJSON().toString();
+	}
 }

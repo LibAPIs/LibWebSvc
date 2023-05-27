@@ -8,7 +8,7 @@
 
 	<groupId>com.mclarkdev.tools</groupId>
 	<artifactId>libwebsvc</artifactId>
-	<version>1.3.2</version>
+	<version>1.3.4</version>
 	<packaging>jar</packaging>
 
 	<name>libwebsvc</name>
@@ -99,18 +99,18 @@
 		</dependency>
 		<dependency>
 			<groupId>com.mclarkdev.tools</groupId>
-			<artifactId>libmetrics</artifactId>
-			<version>1.1</version>
+			<artifactId>libextras</artifactId>
+			<version>1.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.mclarkdev.tools</groupId>
 			<artifactId>libobjectcache</artifactId>
-			<version>1.1</version>
+			<version>1.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.mclarkdev.tools</groupId>
 			<artifactId>liblog</artifactId>
-			<version>1.1</version>
+			<version>1.3</version>
 		</dependency>
 	</dependencies>
 </project>

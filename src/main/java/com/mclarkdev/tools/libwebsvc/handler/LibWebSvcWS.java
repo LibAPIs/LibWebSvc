@@ -67,5 +67,4 @@ public abstract class LibWebSvcWS {
 	protected abstract void onWSConnect(Session session) throws IOException;
 
 	protected abstract void onWSMessage(Session session, String text) throws IOException;
-
 }

@@ -82,7 +82,7 @@ public class LibWebSvcRequestContext {
 
 	public String getMultipartParameter(String parameter) {
 		try {
-			Part part = request.getPart("customer");
+			Part part = request.getPart(parameter);
 			return new String(part.getInputStream().readAllBytes());
 		} catch (IOException | ServletException e) {
 			return null;

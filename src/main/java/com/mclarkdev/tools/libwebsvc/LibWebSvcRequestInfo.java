@@ -2,6 +2,8 @@ package com.mclarkdev.tools.libwebsvc;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONObject;
+
 public class LibWebSvcRequestInfo {
 
 	private final String target;
@@ -35,8 +37,14 @@ public class LibWebSvcRequestInfo {
 		return origin;
 	}
 
-	public String toString() {
+	public JSONObject toJSON() {
+		return new JSONObject()//
+				.put("target", getTarget())//
+				.put("source", getSource())//
+				.put("origin", getOrigin());
+	}
 
-		return String.format("%s:%s:%s", getTarget(), getSource(), getOrigin());
+	public String toString() {
+		return toJSON().toString();
 	}
 }
