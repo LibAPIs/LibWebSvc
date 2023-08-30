@@ -2,6 +2,12 @@
 
 A collection of utilities for easily embedding a Jetty web server into your application.
 
+## API Handlers
+
+Individual API handlers may be created by implementing 
+
+## WebSocket Handlers
+
 ## Auth Lists
 
 Auth lists may be defined in the `auth` directory relative to the project root. Each list shall be named `{realm}.conf` where the realm can be user configurable for different access control groups.

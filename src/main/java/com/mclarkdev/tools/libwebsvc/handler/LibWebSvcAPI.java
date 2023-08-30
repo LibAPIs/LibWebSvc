@@ -84,7 +84,7 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 		// create context and log
 		LibWebSvcRequestContext webRequest = //
 				new LibWebSvcRequestContext(request, response, target, baseRequest);
-		LibLog.log(_NAME + " : " + webRequest.getRequestInfo().toString());
+		LibLog.log("web", webRequest.getRequestInfo().toString());
 
 		// update scheme if requested via proxy
 		String proto = request.getHeader("X-Forwarded-Proto");
