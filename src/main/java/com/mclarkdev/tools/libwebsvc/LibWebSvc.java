@@ -11,6 +11,12 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import com.mclarkdev.tools.libwebsvc.handler.LibWebSvcAPI;
 import com.mclarkdev.tools.libwebsvc.handler.LibWebSvcWS;
 
+/**
+ * LibWebSvc // LibWebSvc
+ * 
+ * A collection of tools for easily starting a Jetty server embedded within your
+ * application.
+ */
 public class LibWebSvc {
 
 	private final HandlerCollection handlers;
@@ -44,7 +50,7 @@ public class LibWebSvc {
 	/**
 	 * Start the Jetty embedded web server.
 	 * 
-	 * @throws Exception
+	 * @throws Exception Failed to start Jetty embedded
 	 */
 	public void start() throws Exception {
 		server.start();
@@ -53,7 +59,7 @@ public class LibWebSvc {
 	/**
 	 * Returns the running Jetty server instance.
 	 * 
-	 * @return
+	 * @return The underlying Jetty server
 	 */
 	public Server getServer() {
 		return server;

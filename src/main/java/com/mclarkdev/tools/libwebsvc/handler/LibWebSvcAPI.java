@@ -18,6 +18,9 @@ import com.mclarkdev.tools.libmetrics.LibMetrics;
 import com.mclarkdev.tools.libwebsvc.LibWebSvcAuthlist;
 import com.mclarkdev.tools.libwebsvc.LibWebSvcRequestContext;
 
+/**
+ * LibWebSvc // LibWebSvcAPI
+ */
 public abstract class LibWebSvcAPI extends AbstractHandler {
 
 	private static final MultipartConfigElement MULTI_PART_CONFIG = new MultipartConfigElement("./");
@@ -40,26 +43,56 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 		this._NAME = handlerName.substring(handlerName.lastIndexOf('.') + 1);
 	}
 
+	/**
+	 * Returns the name of the implemented handler.
+	 * 
+	 * @return name of the handler
+	 */
 	public String getName() {
 		return _NAME;
 	}
 
+	/**
+	 * Sets the permitted request methods.
+	 * 
+	 * @param method permitted method
+	 */
 	public void setPermittedMethod(RequestMethod method) {
 		this.method = method;
 	}
 
+	/**
+	 * Returns the method permitted.
+	 * 
+	 * @return method permitted
+	 */
 	public RequestMethod getPermittedMethod() {
 		return method;
 	}
 
+	/**
+	 * Returns the AuthList being used.
+	 * 
+	 * @return name of auth list
+	 */
 	public String getAuthlist() {
 		return authlist;
 	}
 
+	/**
+	 * Sets the AuthList to be used.
+	 * 
+	 * @param authlist name of auth list
+	 */
 	public void setAuthlist(String authlist) {
 		this.authlist = authlist;
 	}
 
+	/**
+	 * Returns an instance of the metrics collector.
+	 * 
+	 * @return metrics collector
+	 */
 	protected LibMetrics getMetrics() {
 		return metrics;
 	}
@@ -83,7 +116,7 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 
 		// create context and log
 		LibWebSvcRequestContext webRequest = //
-				new LibWebSvcRequestContext(request, response, target, baseRequest);
+				LibWebSvcRequestContext.fromRequest(request, response, target, baseRequest);
 		LibLog.log("web", webRequest.getRequestInfo().toString());
 
 		// update scheme if requested via proxy
@@ -158,6 +191,12 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 		getMetrics().hitCounter(targetTime, "request", "target", _NAME, "time");
 	}
 
+	/**
+	 * Called to validate if authorization required and check for user login.
+	 * 
+	 * @param request the servlet request
+	 * @return if user is permitted
+	 */
 	protected boolean validateAdmin(HttpServletRequest request) {
 
 		// false if no authentication
@@ -179,5 +218,11 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 		return LibWebSvcAuthlist.getAuthlist(authlist).contains(userAuth);
 	}
 
+	/**
+	 * The method to be called in the implemented class.
+	 * 
+	 * @param request the request context
+	 * @throws Exception failure executing implemented method
+	 */
 	public abstract void execute(LibWebSvcRequestContext request) throws Exception;
 }

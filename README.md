@@ -1,14 +1,56 @@
 # LibWebSvc
 
-A collection of utilities for easily embedding a Jetty web server into your application.
+A collection of tools for easily starting a Jetty server embedded within your application.
 
-## API Handlers
+### Maven Dependency
 
-Individual API handlers may be created by implementing 
+Include the library in your project by adding the following dependency to your pom.xml
 
-## WebSocket Handlers
+```
+<dependency>
+	<groupId>com.mclarkdev.tools</groupId>
+	<artifactId>libwebsvc</artifactId>
+	<version>1.5.1</version>
+</dependency>
+```
 
-## Auth Lists
+## Example
+
+### API Handlers
+
+Individual API handlers may be created by implementing LibWebSvcAPI.
+
+The implemented class can then be passed to the server at creation time.
+
+```
+LibWebSvc webServer = new LibWebSvc(bindAddr, bindPort);
+webServer.addHandler("/command", MyRestHandler.class);
+webServer.start();
+```
+
+### WebSocket Handlers
+
+Individual Websocket handlers may be created by implemeting LibWebSvcWS.
+
+The implemented class can then be passed to the server at creation time.
+
+```
+LibWebSvc webServer = new LibWebSvc(bindAddr, bindPort);
+webServer.addWSHandler("/socket", MyWebsocketHandler.class);
+webServer.start();
+```
+
+### Static Resources
+
+Static resources my be served by providing a _resources_ directory containing the web app.
+
+```
+LibWebSvc webServer = new LibWebSvc(bindAddr, bindPort);
+webServer.addResources(86400);
+webServer.start();
+```
+
+### Auth Lists
 
 Auth lists may be defined in the `auth` directory relative to the project root. Each list shall be named `{realm}.conf` where the realm can be user configurable for different access control groups.
 
@@ -22,4 +64,4 @@ java -cp myapp.jar com.mclarkdev.tools.libwebsvc.LibWebSvcAuthGenerator {user} {
 
 # License
 
-Free for everyone. ❤
+Open source & free for all. ❤

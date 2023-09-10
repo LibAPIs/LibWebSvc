@@ -5,12 +5,26 @@ import javax.servlet.http.Cookie;
 import com.mclarkdev.tools.libobjectcache.LibObjectCache;
 import com.mclarkdev.tools.libobjectcache.LibObjectCacheCachedObject;
 
+/**
+ * LibWebSvc // LibWebSvcSessionCache
+ */
 public class LibWebSvcSessionCache {
 
+	/**
+	 * Returns a static instance of the web session cache.
+	 * 
+	 * @return web session cache
+	 */
 	public static LibObjectCache getCache() {
 		return LibObjectCache.getCache("webSessions");
 	}
 
+	/**
+	 * Lookup an existing session object in the cache with a given Session key.
+	 * 
+	 * @param key the session key
+	 * @return the cached session object
+	 */
 	public static LibWebSvcSession getSession(String key) {
 
 		LibObjectCacheCachedObject o = getCache().get(key);
@@ -21,6 +35,12 @@ public class LibWebSvcSessionCache {
 		return (LibWebSvcSession) o;
 	}
 
+	/**
+	 * Lookup an existing session object in the cache.
+	 * 
+	 * @param cookies the request cookies
+	 * @return the cached session object
+	 */
 	public static LibWebSvcSession lookupSession(Cookie[] cookies) {
 
 		LibWebSvcSession session;
@@ -38,6 +58,11 @@ public class LibWebSvcSessionCache {
 		return createNewSession();
 	}
 
+	/**
+	 * Create a new session object.
+	 * 
+	 * @return session object
+	 */
 	public static LibWebSvcSession createNewSession() {
 
 		// create the new session object

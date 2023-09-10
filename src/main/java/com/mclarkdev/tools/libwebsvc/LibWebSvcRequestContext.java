@@ -9,28 +9,128 @@ import javax.servlet.http.Part;
 
 import org.eclipse.jetty.server.Request;
 
+/**
+ * LibWebSvc // LibWebSvcRequestContext
+ */
 public class LibWebSvcRequestContext {
 
-	private final HttpServletRequest request;
-	private final HttpServletResponse response;
+	private HttpServletRequest request;
+	private HttpServletResponse response;
 
-	private final String target;
-	private final Request baseRequest;
+	private String target;
+	private Request baseRequest;
 
-	private final LibWebSvcRequestInfo requestInfo;
-	private final LibWebSvcSession requestSession;
+	private LibWebSvcRequestInfo requestInfo;
+	private LibWebSvcSession requestSession;
 
-	public LibWebSvcRequestContext(//
+	/**
+	 * Disallow public instantiation of the request context.
+	 */
+	private LibWebSvcRequestContext() {
+
+	}
+
+	/**
+	 * Returns the requested target.
+	 * 
+	 * @return the target
+	 */
+	public String getTarget() {
+		return target;
+	}
+
+	/**
+	 * Returns the underlying request.
+	 * 
+	 * @return the request
+	 */
+	public Request getBaseRequest() {
+		return baseRequest;
+	}
+
+	/**
+	 * Returns the underlying servlet request.
+	 * 
+	 * @return the servlet request
+	 */
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	/**
+	 * Returns the underlying servlet response.
+	 * 
+	 * @return the servlet response
+	 */
+	public HttpServletResponse getResponse() {
+		return response;
+	}
+
+	/**
+	 * Returns details about the original request.
+	 * 
+	 * @return request info
+	 */
+	public LibWebSvcRequestInfo getRequestInfo() {
+		return requestInfo;
+	}
+
+	/**
+	 * Returns the request session context.
+	 * 
+	 * @return session context
+	 */
+	public LibWebSvcSession getSession() {
+		return requestSession;
+	}
+
+	/**
+	 * Returns the value of a request parameter.
+	 * 
+	 * @param parameter the parameter name
+	 * @return the value
+	 */
+	public String getParameter(String parameter) {
+		return request.getParameter(parameter);
+	}
+
+	/**
+	 * Returns the value of a MultiPart parameter.
+	 * 
+	 * @param parameter the parameter name
+	 * @return the MultiPart value
+	 */
+	public String getMultipartParameter(String parameter) {
+		try {
+			Part part = request.getPart(parameter);
+			return new String(part.getInputStream().readAllBytes());
+		} catch (IOException | ServletException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Build an instance of the request context given the Servlet objects.
+	 * 
+	 * @param request     the servlet request
+	 * @param response    the servlet response
+	 * @param target      the request target
+	 * @param baseRequest the base request
+	 * @return the request context
+	 */
+	public static LibWebSvcRequestContext fromRequest(//
 			HttpServletRequest request, HttpServletResponse response, String target, Request baseRequest) {
 
-		this.request = request;
-		this.response = response;
+		LibWebSvcRequestContext c = new LibWebSvcRequestContext();
 
-		this.target = target;
-		this.baseRequest = baseRequest;
+		c.request = request;
+		c.response = response;
 
-		this.requestInfo = new LibWebSvcRequestInfo(request);
-		this.requestSession = LibWebSvcSessionCache.lookupSession(request.getCookies());
+		c.target = target;
+		c.baseRequest = baseRequest;
+
+		c.requestInfo = LibWebSvcRequestInfo.fromRequest(request);
+		c.requestSession = LibWebSvcSessionCache.lookupSession(request.getCookies());
 
 		// server details
 		response.setHeader("Server", "");
@@ -50,42 +150,7 @@ public class LibWebSvcRequestContext {
 		if (request.getMethod().equals("OPTIONS")) {
 			response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 		}
-	}
 
-	public String getTarget() {
-		return target;
-	}
-
-	public Request getBaseRequest() {
-		return baseRequest;
-	}
-
-	public HttpServletRequest getRequest() {
-		return request;
-	}
-
-	public HttpServletResponse getResponse() {
-		return response;
-	}
-
-	public LibWebSvcRequestInfo getRequestInfo() {
-		return requestInfo;
-	}
-
-	public LibWebSvcSession getSession() {
-		return requestSession;
-	}
-
-	public String getParameter(String parameter) {
-		return request.getParameter(parameter);
-	}
-
-	public String getMultipartParameter(String parameter) {
-		try {
-			Part part = request.getPart(parameter);
-			return new String(part.getInputStream().readAllBytes());
-		} catch (IOException | ServletException e) {
-			return null;
-		}
+		return c;
 	}
 }
