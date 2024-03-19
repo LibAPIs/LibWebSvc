@@ -2,9 +2,15 @@ package com.mclarkdev.tools.libwebsvc;
 
 import java.net.InetSocketAddress;
 
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.eclipse.jetty.util.thread.ThreadPool;
 import org.eclipse.jetty.websocket.server.WebSocketHandler;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
@@ -26,25 +32,33 @@ public class LibWebSvc {
 	/**
 	 * Creates an embedded instance of Jetty webserver.
 	 * 
-	 * @param port bind port
+	 * @param options server configuration options
 	 */
-	public LibWebSvc(int port) {
-		this(null, port);
-	}
+	public LibWebSvc(LibWebSvcOptions options) {
 
-	/**
-	 * Creates an embedded instance of Jetty webserver.
-	 * 
-	 * @param addr bind address (0.0.0.0)
-	 * @param port bind port
-	 */
-	public LibWebSvc(String addr, int port) {
+		options = ((options != null) ? options : new LibWebSvcOptions());
+
+		InetSocketAddress bindAddr = InetSocketAddress//
+				.createUnresolved(options.getBindAddr(), options.getBindPort());
+
+		ThreadPool pool = new QueuedThreadPool(//
+				options.getPoolMax(), options.getPoolMin(), options.getPoolTimeout());
 
 		this.handlers = new HandlerCollection();
 
-		server = new Server(InetSocketAddress//
-				.createUnresolved(((addr != null) ? addr : "0.0.0.0"), port));
-		server.setHandler(handlers);
+		this.server = new Server(pool);
+		this.server.setHandler(handlers);
+
+		HttpConfiguration httpConfig = new HttpConfiguration();
+		httpConfig.setRequestHeaderSize(options.getRequestMaxSize());
+
+		ServerConnector connector = new ServerConnector(//
+				server, new HttpConnectionFactory(httpConfig));
+
+		connector.setHost(bindAddr.getHostName());
+		connector.setPort(bindAddr.getPort());
+
+		this.server.setConnectors(new Connector[] { connector });
 	}
 
 	/**
