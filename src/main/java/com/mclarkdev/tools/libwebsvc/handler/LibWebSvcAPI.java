@@ -125,9 +125,13 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 			baseRequest.getMetaData().getURI().setScheme(proto);
 		}
 
-		// set allow multipart
-		if (request.getContentType() != null && request.getContentType().startsWith("multipart/")) {
-			request.setAttribute(Request.MULTIPART_CONFIG_ELEMENT, MULTI_PART_CONFIG);
+		// optional content type parsing
+		if (request.getContentType() != null) {
+
+			// set allow multipart if requested
+			if (request.getContentType().startsWith("multipart/")) {
+				request.setAttribute(Request.MULTIPART_CONFIG_ELEMENT, MULTI_PART_CONFIG);
+			}
 		}
 
 		// get user session info
@@ -151,26 +155,33 @@ public abstract class LibWebSvcAPI extends AbstractHandler {
 		// authenticate the user if required
 		if (authlist != null && !validateAdmin(request)) {
 
+			// update counters for auth failure
 			getMetrics().hitCounter("request", "authfail", request.getMethod());
-			response.setHeader("WWW-Authenticate", "Basic realm=" + authlist);
-
 			getMetrics().hitCounter("request", "target", _NAME, "result", "_401");
+
+			// set headers indicating auth required
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setHeader("WWW-Authenticate", "Basic realm=" + authlist);
 			response.addHeader("Content-Type", "application/json");
 			response.getOutputStream().println((new JSONObject()//
-					.put("error", "unauthorized")//
+					.put("error", "authentication required")//
 					.put("code", 401)//
 			).toString(4));
 			return;
 		}
 
+		// set default status
+		response.setStatus(HttpServletResponse.SC_OK);
+
 		try {
 
 			// call the implemented method
-			response.setStatus(HttpServletResponse.SC_OK);
 			this.execute(webRequest);
+
+			// update result counter after command execution
 			getMetrics().hitCounter("request", "target", _NAME, "result", "_" + response.getStatus());
-		} catch (Exception e) {
+
+		} catch (Exception | Error e) {
 
 			// catch errors / exceptions from implementation
 			getMetrics().hitCounter("request", "target", _NAME, "result", "_500");
